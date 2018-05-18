@@ -1,24 +1,18 @@
-<!--# Domisssile--> 
 <p align="center">
 	<img src="readme/crime_project_header.png" alt="header_image" width="100%"> 
 </p>
-<!--<p align="center">
-	<img src="readme/logo3.png" alt="Google Maps API" width="80%"> 
-</p>-->
 
 ## Introduction
 
-Crimes are a common social problem affecting the quality of life and the economic growth of a society [1]. It is considered an essential factor that determines whether or not people move to a new city and what places should be avoided when they travel [2]. With the increase of crimes, law enforcement agencies are continuing to demand advanced geographic information systems and new data mining approaches to improve crime analytics and better protect their communities [3].
-Although crimes could occur everywhere, it is common that criminals work on crime opportunities they face in most familiar areas for them [4]. By providing a data mining approach to determine the most criminal hotspots and find the type, location and time of committed crimes, we can raise people’s awareness regarding the dangerous locations in certain time periods. Therefore, this proposed solution can potentially help people stay away from the locations at a certain time of the day along with saving lives. In addition, having this kind of knowledge would help people to improve their living place choices. On the other hand, police forces can use this solution to increase the level of crime prediction and prevention. Moreover, this would be useful for police resources allocation. It can help in the distribution of police at most likely crime places for any given time, to grant an efficient usage of police resources [5]. By having all of this information available, we hope to make our community safer for the people living there and also for others who will travel there. [6]
-In this project I created a web application that receives an address in Chicago from the user and searches for crime incidents and marks them on the map. It also lists all the crime incidents in the area and saves previous searches.
-
-<!--<p align="center">-->
-<img src="readme/crime_project_data.png" alt="header_image" width="100%"> 
-<!--</p>-->
+The main goal of this project is prediction of safety at a specific location and a particular time. Crimes are a common social problem affecting the quality of life and the economic growth of a society [1]. It is considered an essential factor that determines whether or not people move to a new city and what places should be avoided when they travel [2]. With the increase of crimes, law enforcement agencies are continuing to demand advanced geographic information systems and new data mining approaches to improve crime analytics and better protect their communities [3].
+Although crimes could occur everywhere, it is common that criminals work on crime opportunities they face in most familiar areas for them [4]. By providing a predictive machine learning approach to determine the criminal hotspots and the location, time of committed crimes, people’s awareness can be raised regarding the dangerous locations in certain times. Therefore, this project can potentially help people stay away from the locations at a certain time of the day along with saving lives. In addition, having this kind of knowledge can help people to improve their living place choices. On the other hand, police forces can use this solution to increase the level of crime prediction and prevention. Moreover, this would be useful for police resources allocation. [6] It can help in the distribution of police at most likely crime places for any given time, to grant an efficient usage of police resources [5]. By having all of this information available, we hope to make our community safer for the people living there and also for others who will travel there. [6]
+In this project, I created a web application that receives an address or location and time arguments in Chicago from the user and predicts the probability of crime (hence safety) at a specific location and a particular time, it also searches for crime incidents nearby (100m radius) and marks them on the map as well as listing them in the area and saving the previous searches.
 
 ## Data Source
 
 The <a href="https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2/data" target="_blank">data</a> is Chicago crime dataset from City of Chicago Data Portal. I used ~1.5 years of data (2017 and 5 months of 2018) for computation efficiency reasons, this gives about 350K crime reports. Each crime has 22 columns of information associated with it. Information like location of the crime, crime and location descriptions, type and date of crime, arrest made or not, etc.
+
+<img src="readme/crime_project_data.png" alt="header_image" width="100%"> 
 
 ### Data pre-processing
 
@@ -32,6 +26,14 @@ From the 350K crime reports, in only about 68K the arrest was made (arrest == Tr
 
 The data was split into training and testing sets. 80% of data assigned for learning and training and the remaining 20% of data assigned for testing purposes.
 
+## Feature Selection
+
+The more relevant features picked for predicting crimes in which arrest was made (and therefore predicting safety) are crime date and time (day, month, year, hour, minutes) and crime location (latitude and longitude). In future work, I would add the ability to classify the crime-type in addition to possiblity of crime (safety) at a specific location and time.
+
+<img src="readme/crime_project_features.png" alt="header_image" width="100%">
+
+
+
 ## Modeling
 
 I did grid search modeling, prediction and evaluation using different machine learning algorithms, namely: Logistic Regression, Naive Bayes, Support Vector Machines, K-Nearest Neighbors, Decision Trees, Random Forest, and XG-Boosting. From the grid search the best parameters were used to fit each model and use them to predict and evaluate their performance. The results are summarized in the table below:
@@ -44,7 +46,17 @@ By comparing the models, the model I selected for this classification task is XG
 
 ## Getting Started
 
-You can access the application <a href="https://team-purple-cobras.github.io/isitsafe/" target="_blank">here</a>. Enter your desired address in the search box, Google will automatically complete the address. Click the search button. The page will center and zoom in the map, marking all the crimes within 50 meters radius in the area. Hover over the markers to find more information about the crime such as, description, block and date of the crime incident. You can select the 'Street View' to look and move around for better visualization of the incidents. To see the complete results list, click on the 'View Results List' button on the page. The application will also save the last three searches, you can see the previous searches by clicking on the 'Previous Searches' button.
+When you load the application, you have two options: One is to enter the location and datetime arguments in this format (day, hour, latitude, longitude, minute, month) and click the "is it safe?" button. This will return the probability of safety (crime with arrest not happening). For example in the case below user searched for West Ridge area (west side of Chicago) and predicted 0.04 chance of safety or 96% chance of crime at that time, date and location.  
+
+<p align="center">
+	<img src="readme/crime_project_demo1.png" alt="demo_image" width="75%">
+</p>
+
+Two is to enter your desired address in the search box, Google will automatically complete the address. Click the "find the crimes" button. The page will center and zoom in the map, marking all the crimes within 100 meters radius in the area. Hover over the markers to find more information about the crime such as, description, block and date of the crime incident. You can select the 'Street View' to look and move around for better visualization of the incidents. To see the complete results list, click on the 'View Results List' button on the page. The application will also save the last three searches, you can see the previous searches by clicking on the 'Previous Searches' button.
+
+<p align="center">
+	<img src="readme/crime_project_demo2.png" alt="demo_image" width="75%">
+</p>
 
 ## What's included
 
@@ -60,12 +72,14 @@ safeinthecity/
 │		 │   ├── reset.css
 │	 	 │   └──  style.css	
 │		 └── js/
-│			  ├── crime-api.js
-│			  └── google-map-api.js
+│			 ├── crime-api.js
+│			 └── google-map-api.js
 ├── api.py
-├── app.py
+├── app.py (flask app)
 ├── scaler.pkl
-├── xgboost.pkl
+├── xgboost.pkl 
+├── crime_model.ipynb (main notebook)
+├── requirements.txt
 ├── README.md
 └── readme
 	└── python_logo.png
@@ -107,6 +121,12 @@ change the directory to the project folder and the desired source file (Python, 
 
 ```bash
 cd ./DS-SafetyPrediction/
+```
+
+in the command line, download all the python library dependencies
+
+```bash
+pip install -r /path/to/requirements.txt
 ```
 
 to launch the webapp
